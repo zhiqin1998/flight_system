@@ -1,0 +1,10 @@
+AMS: Amsterdam Airport Schiphol, Netherlands
+ATL: Atlanta GA Airport, USA
+PEK: Beijing Capital International Airport, China
+CDG: Charles De Gaulle Airport, France
+FRA: Frankfurt International Airport, Germany
+HKG: Hong Kong International Airport, Hong Kong
+KUL: Kuala Lumpur International Airport, Malaysia
+LHR: London Heathrow Airport, United Kingdom
+LAX: Los Angeles International Airport, USA
+NRT: Narita International Airport, Japan
