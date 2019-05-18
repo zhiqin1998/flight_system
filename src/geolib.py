@@ -37,7 +37,7 @@ class GeoLib:
 
 
 if __name__ == '__main__':
-    geolib = GeoLib('AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
+    geolib = GeoLib('YOUR_API_KEY')
     ref_code = os.path.join('..', 'res', 'airport code references.txt')
     city_ref = dict(
         (line.split(':')[0].strip(), City(line.split(':')[0].strip(), line.split(':')[1].strip())) for line in
