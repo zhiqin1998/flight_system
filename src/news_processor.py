@@ -1,6 +1,8 @@
 import os
 import string
 
+from src.city import City
+
 
 class NewsProcessor:
     def __init__(self, pos_path=os.path.join('..', 'res', 'word', 'positive.txt'),
@@ -40,6 +42,9 @@ class NewsProcessor:
 
         return [''.join(list(map(only_ascii, w))) for w in word_list]
 
+    def count_dict(self, word_dicts):
+        return sum([sum(word_dict.values()) for word_dict in word_dicts])
+
     def filter_pos(self, word_dict):
         return {k: v for k, v in word_dict.items() if k in self.pos_words}
 
@@ -49,6 +54,16 @@ class NewsProcessor:
     def filter_neutral(self, word_dict):
         return {k: v for k, v in {k: v for k, v in word_dict.items() if k not in self.pos_words}.items() if
                 k not in self.neg_words}
+
+    def process_all(self, city_dict, res_dir=os.path.join('..', 'res')):
+        for c in [line.split(':')[0].strip() for line in
+                  open(os.path.join(res_dir, 'airport code references.txt'), 'r').read().strip().split('\n')]:
+            city_dict[c].news_dicts = self.count_words(os.path.join(res_dir, 'news', c))
+            city_dict[c].pos_dicts = [self.filter_pos(news_dict) for news_dict in city_dict[c].news_dicts]
+            city_dict[c].neg_dicts = [self.filter_neg(news_dict) for news_dict in city_dict[c].news_dicts]
+            city_dict[c].neu_dicts = [self.filter_neutral(news_dict) for news_dict in city_dict[c].news_dicts]
+            city_dict[c].pol_senti = self.count_dict(city_dict[c].pos_dicts) - self.count_dict(city_dict[c].neg_dicts)
+        return city_dict
 
 
 if __name__ == '__main__':
@@ -68,3 +83,11 @@ if __name__ == '__main__':
     neutral = [news_processor.filter_neutral(news_dict) for news_dict in news_dicts]
     print()
     [print(d) for d in neutral]
+    print()
+    # full code
+    ref_code = os.path.join('..', 'res', 'airport code references.txt')
+    city_ref = dict(
+        (line.split(':')[0].strip(), City(line.split(':')[0].strip(), line.split(':')[1].strip())) for line in
+        open(ref_code, 'r').read().strip().split('\n'))
+    news_processor.process_all(city_ref)
+    [print(v) for c, v in city_ref.items()]
