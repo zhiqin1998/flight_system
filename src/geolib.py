@@ -1,19 +1,20 @@
 import os
 
+import googlemaps
 from geopy.distance import great_circle
-from geopy.geocoders import Nominatim
 
 from src.city import City
 
 
 class GeoLib:
-    def __init__(self, user_agent='Flight Recommend System'):
-        self.geolocator = Nominatim(user_agent=user_agent)
+    def __init__(self, gmap_api_key):
+        self.gmap_api_jey = gmap_api_key
+        self.geolocator = googlemaps.Client(key=gmap_api_key)
 
     def get_coordinate(self, name):
-        location = self.geolocator.geocode(name)
+        geocode_result = self.geolocator.geocode(name)
         # print(name, location.latitude, location.longitude)
-        return location.latitude, location.longitude
+        return geocode_result[0]['geometry']['location']['lat'], geocode_result[0]['geometry']['location']['lng']
 
     def update_all_coordinate(self, city_ref):
         for k, v in city_ref.items():
@@ -36,7 +37,7 @@ class GeoLib:
 
 
 if __name__ == '__main__':
-    geolib = GeoLib()
+    geolib = GeoLib('AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
     ref_code = os.path.join('..', 'res', 'airport code references.txt')
     city_ref = dict(
         (line.split(':')[0].strip(), City(line.split(':')[0].strip(), line.split(':')[1].strip())) for line in
