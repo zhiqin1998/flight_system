@@ -21,15 +21,19 @@ class NewsProcessor:
                 list(map(str.strip, open(path, 'r', errors='ignore').read().strip().lower().translate(
                     str.maketrans('', '', string.punctuation)).split())))
             if rm_stopwords:
-                words = [w for w in words if w not in self.stop_words]
+                words, stops = self.filter_stop(words)
+                return dict(zip(words, [words.count(p) for p in words])), dict(
+                    zip(stops, [stops.count(p) for p in stops]))
             return dict(zip(words, [words.count(p) for p in words]))
 
         if os.path.isdir(text_path):
-            ans = []
+            words, stops = [], []
             for file in os.listdir(text_path):
                 if file.endswith('.txt'):
-                    ans.append(count(os.path.join(text_path, file)))
-            return ans
+                    w, s = count(os.path.join(text_path, file))
+                    words.append(w)
+                    stops.append(s)
+            return words, stops
         else:
             return count(text_path)
 
@@ -42,8 +46,23 @@ class NewsProcessor:
 
         return [''.join(list(map(only_ascii, w))) for w in word_list]
 
-    def count_dict(self, word_dicts):
+    def count_dicts(self, word_dicts):
         return sum([sum(word_dict.values()) for word_dict in word_dicts])
+
+    def combine_dicts(self, word_dicts):
+        aux = {}
+        for word_dict in word_dicts:
+            for k, v in word_dict.items():
+                if k in aux:
+                    aux[k] += v
+                else:
+                    aux[k] = v
+        return aux
+
+    def filter_stop(self, words):
+        word, stop = [], []
+        [(word, stop)[w in self.stop_words].append(w) for w in words]
+        return word, stop
 
     def filter_pos(self, word_dict):
         return {k: v for k, v in word_dict.items() if k in self.pos_words}
@@ -58,11 +77,11 @@ class NewsProcessor:
     def process_all(self, city_dict, res_dir=os.path.join('..', 'res')):
         for c in [line.split(':')[0].strip() for line in
                   open(os.path.join(res_dir, 'airport code references.txt'), 'r').read().strip().split('\n')]:
-            city_dict[c].news_dicts = self.count_words(os.path.join(res_dir, 'news', c))
+            city_dict[c].news_dicts, city_dict[c].stop_dicts = self.count_words(os.path.join(res_dir, 'news', c))
             city_dict[c].pos_dicts = [self.filter_pos(news_dict) for news_dict in city_dict[c].news_dicts]
             city_dict[c].neg_dicts = [self.filter_neg(news_dict) for news_dict in city_dict[c].news_dicts]
             city_dict[c].neu_dicts = [self.filter_neutral(news_dict) for news_dict in city_dict[c].news_dicts]
-            city_dict[c].pol_senti = self.count_dict(city_dict[c].pos_dicts) - self.count_dict(city_dict[c].neg_dicts)
+            city_dict[c].pol_senti = self.count_dicts(city_dict[c].pos_dicts) - self.count_dicts(city_dict[c].neg_dicts)
         return city_dict
 
 
@@ -71,9 +90,12 @@ if __name__ == '__main__':
     print(news_processor.neg_words)
     print(news_processor.pos_words)
     print(news_processor.stop_words)
-    news_dicts = news_processor.count_words(os.path.join('..', 'res', 'news', 'ATL'))
+    news_dicts, stop_dicts = news_processor.count_words(os.path.join('..', 'res', 'news', 'ATL'))
     print()
     [print(d) for d in news_dicts]
+    [print(d) for d in stop_dicts]
+    print()
+    print(news_processor.combine_dicts(stop_dicts))
     neg = [news_processor.filter_neg(news_dict) for news_dict in news_dicts]
     print()
     [print(d) for d in neg]
