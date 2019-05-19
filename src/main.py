@@ -1,5 +1,6 @@
 import copy
 import datetime
+import functools
 import os
 
 import plotly
@@ -23,12 +24,11 @@ class FlightRecommendSystem:
         self.update_city_coord()
         self.gen_dist_mat()
         self.process_all_news()
+        self.color = ['red', 'blue', 'orange', 'white', 'purple', 'yellow', 'pink', 'green']
         min_lat, max_lat, min_lon, max_lon = min([c.coor[0] for _, c in self.city_list.items()]), max(
             [c.coor[0] for _, c in self.city_list.items()]), min([c.coor[1] for _, c in self.city_list.items()]), max(
             [c.coor[1] for _, c in self.city_list.items()])
-        self.base_gmap = gmplot.GoogleMapPlotter((min_lat + max_lat) / 2, (min_lon + max_lon) / 2, 3)
-        self.base_gmap.apikey = self.gmap_api_key
-        self.base_gmap.coloricon = "http://www.googlemapsmarkers.com/v1/%s/"
+        self.base_gmap = self.create_gmap((min_lat + max_lat) / 2, (min_lon + max_lon) / 2)
 
     def plot_cities(self, file_path=os.path.join('..', 'res', 'html', 'cities.html')):
         if not os.path.exists(os.path.dirname(file_path)):
@@ -57,8 +57,55 @@ class FlightRecommendSystem:
     def print_dist_mat(self):
         self.geolib.print_dist_mat(self.dist_mat)
 
-    def shortest_route(self, src, dst):
-        pass
+    def shortest_routes(self, src, dst, min_max=(2, 3)):
+        min, max = min_max
+        p, ans = [src], []
+
+        def cust_bfs(path, dist, pol):
+            if len(path) <= max + 2:
+                cur = path[-1]
+                if cur == dst:
+                    if len(path) >= min + 2:
+                        ans.append((path, dist, pol))
+                else:
+                    [cust_bfs(path + [c], dist + self.dist_mat[cur][c], pol + v.pol_senti) for c, v in
+                     self.city_list.items() if c != cur and c != src]
+
+        cust_bfs(p, 0, 0)
+        return ans
+
+    def sort_routes(self, routes, range_threshold=1000):
+        def cmp(a, b):
+            # if abs(a[1] - b[1]) < range_threshold:
+            if int(a[1] / range_threshold) == int(b[1] / range_threshold):
+                return b[2] - a[2]
+            else:
+                return a[1] - b[1]
+
+        return sorted(routes, key=functools.cmp_to_key(cmp))
+
+    def create_gmap(self, lat, lon, zoom=3):
+        base_gmap = gmplot.GoogleMapPlotter(lat, lon, zoom)
+        base_gmap.apikey = self.gmap_api_key
+        base_gmap.coloricon = "http://www.googlemapsmarkers.com/v1/%s/"
+        return base_gmap
+
+    def plot_routes(self, routes, gmap=None, file_path=os.path.join('..', 'res', 'html', 'route.html'),
+                    plot_src_dst=True):
+        src, dst = routes[0][0][0], routes[0][0][-1]
+        mid_lat, mid_lon = (self.city_list[src].coor[0] + self.city_list[dst].coor[0]) / 2, (
+                self.city_list[src].coor[1] + self.city_list[dst].coor[1]) / 2
+        if (abs(self.city_list[src].coor[1] - self.city_list[dst].coor[1])) > 180:
+            mid_lon += 180.0
+        if gmap is None:
+            gmap = self.create_gmap(mid_lat, mid_lon, 2)
+        for i in range(len(routes)):
+            latitude_list, longitude_list = map(list, zip(*[self.city_list[c].coor for c in routes[i][0]]))
+            gmap.plot(latitude_list, longitude_list, self.color[i], edge_width=len(routes) - i)
+        if plot_src_dst:
+            gmap.plot([self.city_list[src].coor[0], self.city_list[dst].coor[0]],
+                      [self.city_list[src].coor[1], self.city_list[dst].coor[1]], color='black', edge_width=2.5)
+        gmap.draw(file_path)
 
     def plot_words_hist(self, word_dicts, combine=True):
         word_dict = self.news_processor.combine_dicts(word_dicts)
@@ -144,13 +191,17 @@ class FlightRecommendSystem:
 
 if __name__ == '__main__':
     t1 = datetime.datetime.now()
-    flightsystem = FlightRecommendSystem(gmap_api_key='YOUR_API_KEY')
+    flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
     flightsystem.print_cities()
     flightsystem.print_dist_mat()
     print('time taken: {}'.format(datetime.datetime.now() - t1))
     flightsystem.plot_cities()
-    flightsystem.plot([flightsystem.plot_single_city('ATL')], 'Atlanta')
-    flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list['ATL'].pos_dicts)], 'Atlanta Positive Words',
-                      auto_open=True)
-    flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
+    p = flightsystem.shortest_routes('KUL', 'ATL')
+    p = flightsystem.sort_routes(p)
+    [print(j) for j in p]
+    flightsystem.plot_routes(p[:5])
+    # flightsystem.plot([flightsystem.plot_single_city('ATL', group='pos+neg+neu+stop', graph_type='hist')], 'Atlanta')
+    # flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list['ATL'].pos_dicts)], 'Atlanta Positive Words',
+    #                   auto_open=True)
+    # flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
     # flightsystem.plot_all_cities_pies()
