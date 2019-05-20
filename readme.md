@@ -1,4 +1,17 @@
 # FIND THE BEST FLIGHT (15%)
+
+## Setup
+1. Clone the repository
+2. CD into the repository and do `pip3 install -r requirements.txt`
+3. Change and use your own google maps API key in `main.py`. Get one here https://developers.google.com/maps/documentation/distance-matrix/get-api-key
+
+## TODO List
+1. Make readable comments
+2. GUI
+3. Number 10 at the list below
+4. Report and Presentations
+
+## Topic
 _You have been assigned to develop a system to help the end user to find the best flight to use when there is no direct flight available. The system will recommend the end user the best flight only based on route and political sentiment of the country. The best flight does not necessarily base on the shortest route but also considering the political situation each country the flight transited. Please note that there is no price of ticket involved in this recommendation system._ 
 
 1.	Get and mark locations of 5- 10 major cities in the world (where you can easily gets their main English newspaper online) from Kuala Lumpur 
@@ -41,8 +54,8 @@ http://positivewordsresearch.com/list-of-negative-words/
         2.	Based on the conclusion, you may say the country has positive or negative political situation. 
 10.	Lastly, calculate the total probability distribution of random routes taken for the end user to travel from Kuala Lumpur to other country.
 
-## News Source
-### London
+### News Source
+#### London
 1. London Marathon chiefs probe 'horrific' treatment of slowest runners called 'fat' and told to 'hurry up'
 https://www.standard.co.uk/news/london/london-marathon-chiefs-probe-horrific-treatment-of-slowest-runners-a4132221.html
 2. Richmond fire: 100 firefighters battle blaze at hotel and spa in south-west London
@@ -56,7 +69,7 @@ https://www.standard.co.uk/news/london/nail-bomb-haunts-me-20-years-on-says-surv
 6. Man knifed in broad daylight attack next to Brunel University London campus in Uxbridge
 https://www.standard.co.uk/news/crime/man-knifed-in-broad-daylight-attack-next-to-brunel-university-london-campus-in-uxbridge-a4128081.html
 
-### Beijing
+#### Beijing
 1. CFLD business expanding fast, signals confidence in domestic market
 http://www.globaltimes.cn/content/1147419.shtml
 2. Employees share their attitudes toward overtime working culture
@@ -68,7 +81,7 @@ http://www.globaltimes.cn/content/1147096.shtml
 5. ‘Death education’
 http://www.globaltimes.cn/content/1144525.shtml
 
-### Tokyo
+#### Tokyo
 1. Two teens arrested in Osaka for allegedly stretching rope across a road, injuring a motorcyclist
 https://www.japantimes.co.jp/news/2019/05/02/national/two-teens-arrested-woman-injured-rope-across-road/#.XM0aaegzYgw
 2. Nearly 80% in Japan support having women on throne and 82% feel affection for new emperor
@@ -80,7 +93,7 @@ https://www.tokyoreporter.com/japan/woman-has-bag-snatched-after-pulling-10-mill
 5. Trade ministry official arrested for attempting to smuggle stimulant
 https://japantoday.com/category/crime/trade-ministry-official-arrested-for-attempting-to-smuggle-stimulant
 
-### Los Angeles
+#### Los Angeles
 1. Bomb threat cancels classes at South LA’s Locke High School; prom will go on
 https://www.dailynews.com/2019/05/03/bomb-squad-searches-south-la-high-school-in-wake-of-threat/
 2. In celebrations across LAUSD, San Fernando Valley high schools do #collegesigningday
@@ -92,7 +105,7 @@ https://www.dailynews.com/2019/05/03/la-city-council-approves-reforms-to-city-se
 5. Religion events in the San Fernando Valley area, May 4-11
 https://www.dailynews.com/2019/05/03/religion-events-in-the-san-fernando-valley-area-may-4-11/
 
-### France
+#### France
 1. Clashes as May Day protesters march in cities across Europe
 https://www.theguardian.com/world/2019/may/01/clashes-may-day-protesters-march-cities-across-europe-paris
 2. Why delays and cancellations on France's rail network are the 'worst ever'
@@ -104,7 +117,7 @@ https://www.theguardian.com/world/2019/apr/18/parisians-and-president-macron-sal
 5. Low-stakes European election in France – but not for Macron and Le Pen
 https://www.france24.com/en/20190503-european-election-france-macron-le-pen-yellow-vests
 
-### Germany
+#### Germany
 1. Germans take to streets in rent rise protests demanding more homes to become social housing
 https://www.euronews.com/2019/04/06/germans-take-to-streets-in-rent-rise-protests-demanding-government-takeover-large-private
 2. German police arrest ten suspects over alleged terrorist attack plot
@@ -117,7 +130,7 @@ https://www.thelocal.de/20190503/germanys-climate-protesting-youth-take-fight-to
 https://www.thelocal.de/20190503/german-police-shut-down-major-darknet-illegal-trading-site
 
 
-### Hong Kong
+#### Hong Kong
 1. The Umbrella Movement trial: Jailed for not apologising? Isn’t that a bit political?
 https://www.hongkongfp.com/2019/05/03/hong-kongs-umbrella-movement-trio-appeals-conviction-sentence/
 2. Hong Kong education chief says law for special needs students unnecessary despite lawmakers’ proposal
@@ -129,7 +142,7 @@ https://www.scmp.com/news/hong-kong/law-and-crime/article/3008840/hong-kong-plas
 5. Extradition bill sparks paralysing row in Hong Kong’s legislature
 https://www.scmp.com/news/hong-kong/politics/article/3008333/extradition-bill-sparks-paralysing-row-hong-kongs
 
-### Kuala Lumpur
+#### Kuala Lumpur
 1. 'Govt will reclaim land if it is owned by Johor Sultan'
 https://www.nst.com.my/news/nation/2019/05/485437/govt-will-reclaim-land-if-it-owned-johor-sultan
 2. KL, Canberra step up gender equality discussions
@@ -141,7 +154,7 @@ https://www.thestar.com.my/news/nation/2019/05/04/health-ministry-launches-new-f
 5. DBKL to pay RM3 for every rat caught at Jinjang Utara market
 https://www.thestar.com.my/metro/metro-news/2019/05/04/dbkl-to-pay-rm3-for-every-rat-caught-at-jinjang-utara-market/
 
-### Atlanta, USA
+#### Atlanta, USA
 1. SATURDAY’S WEATHER-TRAFFIC: Cloudy morning to build to potentially severe storms
 https://www.ajc.com/weather/saturday-weather-traffic-cloudy-morning-build-potentially-severe-storms/qGCkhyzdTOh3cZG3iCBLUJ/
 2. Atlanta —yet again —is named one of the worst places to commute by transit or car in recent ranking
@@ -154,7 +167,7 @@ https://www.ajc.com/business/employment/temp-jobs-play-bigger-role-atlanta-econo
 https://www.ajc.com/business/employment/these-metro-atlanta-companies-are-making-big-hires-this-may/K6b9ixmPqj5y0QoZlgdhGP/
 
 
-### Amsterdam, Netherlands
+#### Amsterdam, Netherlands
 1. AMSTERDAM STUDENT CAMPUSES UNSAFE, STUDENT UNION SAYS
 https://nltimes.nl/2019/05/03/amsterdam-student-campuses-unsafe-student-union-says
 2. AMSTERDAM BILLBOARDS TO TURN INTO WAR MONUMENTS FOR REMEMBRANCE DAY
