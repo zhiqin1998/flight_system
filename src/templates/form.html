@@ -2,11 +2,9 @@
 <html>
    <body>
       <h2 style = "text-align: center;">Flight System</h2>
-
       {% for message in form.source.errors %}
          <div>{{ message }}</div>
       {% endfor %}
-
       {% for message in form.destination.errors %}
          <div>{{ message }}</div>
       {% endfor %}
@@ -30,6 +28,16 @@
 
          </fieldset>
       </form>
+   {% with messages = get_flashed_messages() %}
+     {% if messages %}
+       <script>
+         var messages = {{ messages | safe }};
+         for (var i=0; i<messages.length; i++) {
+           alert(messages[i]);
+         }
+       </script>
+     {% endif %}
+   {% endwith %}
    </body>
 </html>
 

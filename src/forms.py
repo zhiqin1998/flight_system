@@ -1,10 +1,14 @@
-from flask_wtf import Form
-from wtforms import TextField, IntegerField, TextAreaField, SubmitField, RadioField,SelectField
+from flask_wtf import FlaskForm
+from wtforms import SubmitField, SelectField
 
-from wtforms import validators, ValidationError
+from wtforms.validators import DataRequired
 
 
-class ContactForm(Form):
-    source = TextField("Source", [validators.Required("Enter the source")])
-    destination = TextField("Destination", [validators.Required("Enter the destination")])
+class RouteForm(FlaskForm):
+    def validate(self):
+        if self.source.data == 'None' or self.destination.data == 'None':
+            return False
+        return True
+    source = SelectField('Sources', validators=[DataRequired()])
+    destination = SelectField("Destination", validators=[DataRequired()])
     submit = SubmitField("Send")
