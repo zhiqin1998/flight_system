@@ -1,3 +1,6 @@
+wtforms
+flask
+flask_wtf
 googlemaps
 geopy
 plotly

@@ -5,14 +5,13 @@ import os
 
 import plotly
 import plotly.graph_objs as go
+from flask import Flask, render_template, request, flash
 from gmplot import *
 
 from src.city import City
+from src.forms import ContactForm
 from src.geolib import GeoLib
 from src.news_processor import NewsProcessor
-from flask import Flask, render_template, request, flash
-from src.forms import ContactForm
-
 
 
 class FlightRecommendSystem:
@@ -120,7 +119,8 @@ class FlightRecommendSystem:
         word, count = map(list, [word_dict.keys(), word_dict.values()])
         return go.Bar(x=word, y=count, text=count, hoverinfo='y', textposition='auto', opacity=0.6)
 
-    def plot_all_cities_hist(self, path=os.path.join('..', 'src', 'templates', 'cityhist.html'), group='pos+stop+neg+neu'):
+    def plot_all_cities_hist(self, path=os.path.join('..', 'src', 'templates', 'cityhist.html'),
+                             group='pos+stop+neg+neu'):
         traces = [self.plot_single_city(c, 'hist', group=group) for c, _ in self.city_list.items()]
         self.plot(traces, 'News Word Counts Summary Histogram', path, layout=go.Layout(barmode='group'))
 
@@ -159,7 +159,8 @@ class FlightRecommendSystem:
                            textposition='auto', opacity=0.6)
         return trace
 
-    def plot_all_cities_pies(self, path=os.path.join('..', 'src', 'templates', 'citypies.html'), group='pos+stop+neg+neu'):
+    def plot_all_cities_pies(self, path=os.path.join('..', 'src', 'templates', 'citypies.html'),
+                             group='pos+stop+neg+neu'):
         traces = []
         annotations = []
         x_low, x_high, y_low, y_high, i = 0, 0.2, 0, 0.5, 0
@@ -205,21 +206,17 @@ def contact():
             flash('All fields are required.')
             return render_template('form.html', form=form)
         else:
-            t1 = datetime.datetime.now()
-            flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
-            flightsystem.print_cities()
-            flightsystem.print_dist_mat()
-            print('time taken: {}'.format(datetime.datetime.now() - t1))
-            flightsystem.plot_cities()
-
             p = flightsystem.shortest_routes(form.source._value(), form.destination._value())
             p = flightsystem.sort_routes(p)
             [print(j) for j in p]
             flightsystem.plot_routes(p[:5])
-            flightsystem.plot([flightsystem.plot_single_city(form.destination._value(), group='pos+neg+neu+stop', graph_type='hist')],
-                              form.destination._value(),path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
-            flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list[form.destination._value()].pos_dicts)], 'Positive Words',
-                               path=os.path.join('..', 'src', 'templates', 'singlehist.html'))
+            flightsystem.plot(
+                [flightsystem.plot_single_city(form.destination._value(), group='pos+neg+neu+stop', graph_type='hist')],
+                form.destination._value(), path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
+            flightsystem.plot(
+                [flightsystem.plot_words_hist(flightsystem.city_list[form.destination._value()].pos_dicts)],
+                'Positive Words',
+                path=os.path.join('..', 'src', 'templates', 'singlehist.html'))
             flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
             flightsystem.plot_all_cities_pies()
 
@@ -237,30 +234,38 @@ def contact():
 def cityhist():
     return render_template('cityhist.html')
 
+
 @app.route('/citypies', methods=['GET', 'POST'])
 def citypies():
     return render_template('citypies.html')
+
 
 @app.route('/singlecity', methods=['GET', 'POST'])
 def singlecity():
     return render_template('singlecity.html')
 
+
 @app.route('/singlehist', methods=['GET', 'POST'])
 def singlehist():
     return render_template('singlehist.html')
+
 
 @app.route('/routes', methods=['GET', 'POST'])
 def route():
     return render_template('route.html')
 
 
-
-
 if __name__ == '__main__':
+    t1 = datetime.datetime.now()
+    flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
+    flightsystem.print_cities()
+    flightsystem.print_dist_mat()
+    print('time taken: {}'.format(datetime.datetime.now() - t1))
+    flightsystem.plot_cities()
     app.run(debug=True)
 
     # flightsystem.plot([flightsystem.plot_single_city('ATL', group='pos+neg+neu+stop', graph_type='hist')], 'Atlanta')
-    # flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list['ATL'].pos_dicts)], 'Atlanta Positive Words',
-    #                   auto_open=True)
+    # flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list['ATL'].pos_dicts)],
+    #                   'Atlanta Positive Words', auto_open=True)
     # flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
     # flightsystem.plot_all_cities_pies()
