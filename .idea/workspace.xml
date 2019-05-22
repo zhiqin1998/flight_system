@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23f46de4-f900-4894-86af-4131b7a6a39d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/html/cities.html" beforeDir="false" afterPath="$PROJECT_DIR$/res/html/cities.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/html/route.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/templates/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/cityhist.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/cityhist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/citypies.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/citypies.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/route.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/route.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/singlecity.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/singlecity.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/singlehist.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/singlehist.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -77,8 +78,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/templates/dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+            <state relative-caret-position="153">
+              <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -96,7 +97,7 @@
         <entry file="file://$PROJECT_DIR$/src/templates/route.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="427">
-              <caret line="134" column="27" lean-forward="true" selection-start-line="134" selection-start-column="27" selection-end-line="134" selection-end-column="27" />
+              <caret line="134" column="27" selection-start-line="134" selection-start-column="27" selection-end-line="134" selection-end-column="27" />
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -543,7 +544,7 @@
     <entry file="file://$PROJECT_DIR$/src/templates/route.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="427">
-          <caret line="134" column="27" lean-forward="true" selection-start-line="134" selection-start-column="27" selection-end-line="134" selection-end-column="27" />
+          <caret line="134" column="27" selection-start-line="134" selection-start-column="27" selection-end-line="134" selection-end-column="27" />
           <folding>
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -553,8 +554,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/templates/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="153">
+          <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
         </state>
       </provider>
     </entry>
