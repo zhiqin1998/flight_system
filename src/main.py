@@ -10,6 +10,9 @@ from gmplot import *
 from src.city import City
 from src.geolib import GeoLib
 from src.news_processor import NewsProcessor
+from flask import Flask, render_template, request, flash
+from src.forms import ContactForm
+
 
 
 class FlightRecommendSystem:
@@ -90,7 +93,7 @@ class FlightRecommendSystem:
         base_gmap.coloricon = "http://www.googlemapsmarkers.com/v1/%s/"
         return base_gmap
 
-    def plot_routes(self, routes, gmap=None, file_path=os.path.join('..', 'res', 'html', 'route.html'),
+    def plot_routes(self, routes, gmap=None, file_path=os.path.join('..', 'src', 'templates', 'route.html'),
                     plot_src_dst=True):
         src, dst = routes[0][0][0], routes[0][0][-1]
         mid_lat, mid_lon = (self.city_list[src].coor[0] + self.city_list[dst].coor[0]) / 2, (
@@ -188,18 +191,39 @@ class FlightRecommendSystem:
         fig = go.Figure(data=trace, layout=layout)
         plotly.offline.plot(fig, filename=path, auto_open=auto_open)
 
+app = Flask(__name__)
+app.secret_key = 'development key'
+
+
+@app.route('/form', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash('All fields are required.')
+            return render_template('form.html', form=form)
+        else:
+            t1 = datetime.datetime.now()
+            flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
+            flightsystem.print_cities()
+            flightsystem.print_dist_mat()
+            print('time taken: {}'.format(datetime.datetime.now() - t1))
+            flightsystem.plot_cities()
+
+            p = flightsystem.shortest_routes(form.source._value(), form.destination._value())
+            p = flightsystem.sort_routes(p)
+            [print(j) for j in p]
+            flightsystem.plot_routes(p[:5])
+
+            return render_template('route.html')
+    elif request.method == 'GET':
+        return render_template('form.html', form=form)
+
 
 if __name__ == '__main__':
-    t1 = datetime.datetime.now()
-    flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
-    flightsystem.print_cities()
-    flightsystem.print_dist_mat()
-    print('time taken: {}'.format(datetime.datetime.now() - t1))
-    flightsystem.plot_cities()
-    p = flightsystem.shortest_routes('KUL', 'ATL')
-    p = flightsystem.sort_routes(p)
-    [print(j) for j in p]
-    flightsystem.plot_routes(p[:5])
+    app.run(debug=True)
+
     # flightsystem.plot([flightsystem.plot_single_city('ATL', group='pos+neg+neu+stop', graph_type='hist')], 'Atlanta')
     # flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list['ATL'].pos_dicts)], 'Atlanta Positive Words',
     #                   auto_open=True)
