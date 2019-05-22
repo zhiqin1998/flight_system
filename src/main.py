@@ -120,7 +120,7 @@ class FlightRecommendSystem:
         word, count = map(list, [word_dict.keys(), word_dict.values()])
         return go.Bar(x=word, y=count, text=count, hoverinfo='y', textposition='auto', opacity=0.6)
 
-    def plot_all_cities_hist(self, path=os.path.join('..', 'res', 'html', 'tmp.html'), group='pos+stop+neg+neu'):
+    def plot_all_cities_hist(self, path=os.path.join('..', 'src', 'templates', 'cityhist.html'), group='pos+stop+neg+neu'):
         traces = [self.plot_single_city(c, 'hist', group=group) for c, _ in self.city_list.items()]
         self.plot(traces, 'News Word Counts Summary Histogram', path, layout=go.Layout(barmode='group'))
 
@@ -159,7 +159,7 @@ class FlightRecommendSystem:
                            textposition='auto', opacity=0.6)
         return trace
 
-    def plot_all_cities_pies(self, path=os.path.join('..', 'res', 'html', 'tmp.html'), group='pos+stop+neg+neu'):
+    def plot_all_cities_pies(self, path=os.path.join('..', 'src', 'templates', 'citypies.html'), group='pos+stop+neg+neu'):
         traces = []
         annotations = []
         x_low, x_high, y_low, y_high, i = 0, 0.2, 0, 0.5, 0
@@ -179,7 +179,7 @@ class FlightRecommendSystem:
                 y_low += 0.5
         self.plot(traces, 'News Word Counts Summary Pie Chart', path, annotations)
 
-    def plot(self, trace, title, path=os.path.join('..', 'res', 'html', 'tmp.html'), annotations=None, auto_open=False,
+    def plot(self, trace, title, path, annotations=None, auto_open=False,
              layout=None):
         if annotations is None:
             annotations = []
@@ -190,6 +190,7 @@ class FlightRecommendSystem:
             layout.annotations = annotations
         fig = go.Figure(data=trace, layout=layout)
         plotly.offline.plot(fig, filename=path, auto_open=auto_open)
+
 
 app = Flask(__name__)
 app.secret_key = 'development key'
@@ -215,10 +216,44 @@ def contact():
             p = flightsystem.sort_routes(p)
             [print(j) for j in p]
             flightsystem.plot_routes(p[:5])
+            flightsystem.plot([flightsystem.plot_single_city(form.destination._value(), group='pos+neg+neu+stop', graph_type='hist')],
+                              form.destination._value(),path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
+            flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list[form.destination._value()].pos_dicts)], 'Positive Words',
+                               path=os.path.join('..', 'src', 'templates', 'singlehist.html'))
+            flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
+            flightsystem.plot_all_cities_pies()
 
-            return render_template('route.html')
+            return render_template('dashboard.html')
     elif request.method == 'GET':
         return render_template('form.html', form=form)
+
+
+# @app.route('/<string:page_name>/')
+# def render_static(page_name):
+#     if not page_name.endswith('.html'):
+#         page_name = '{}.html'.format(page_name)
+#     return render_template('{}'.format(page_name))
+@app.route('/cityhist', methods=['GET', 'POST'])
+def cityhist():
+    return render_template('cityhist.html')
+
+@app.route('/citypies', methods=['GET', 'POST'])
+def citypies():
+    return render_template('citypies.html')
+
+@app.route('/singlecity', methods=['GET', 'POST'])
+def singlecity():
+    return render_template('singlecity.html')
+
+@app.route('/singlehist', methods=['GET', 'POST'])
+def singlehist():
+    return render_template('singlehist.html')
+
+@app.route('/routes', methods=['GET', 'POST'])
+def route():
+    return render_template('route.html')
+
+
 
 
 if __name__ == '__main__':

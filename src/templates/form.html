@@ -2,33 +2,34 @@
 <html>
    <body>
       <h2 style = "text-align: center;">Flight System</h2>
-		
+
       {% for message in form.source.errors %}
          <div>{{ message }}</div>
       {% endfor %}
-      
+
       {% for message in form.destination.errors %}
          <div>{{ message }}</div>
       {% endfor %}
-      
+
       <form action = "http://localhost:5000/form" method = post>
          <fieldset>
             <legend>Flight System</legend>
             {{ form.hidden_tag() }}
-            
+
             <div style = font-size:20px; font-weight:bold; margin-left:150px;>
                {{ form.source.label }}<br>
                {{ form.source }}
                <br>
-               
+
                 {{ form.destination.label }}<br>
                {{ form.destination }}
                <br>
 
                {{ form.submit }}
             </div>
-            
+
          </fieldset>
       </form>
    </body>
 </html>
+
