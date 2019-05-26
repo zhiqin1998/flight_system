@@ -12,8 +12,10 @@
 
 
 </nav>
-    <iframe width="1000" height="1000" src={{url_for('route')}}></iframe>
-    <table class="table-form table table-sm table-hover compact" id="metadata">
+<div>
+    <iframe width="50%" height="1000" src={{url_for('route')}}></iframe>
+    <div style="width:50%; float:right">
+    <table class="table-form table table-sm table-hover compact" id="metadata" >
         <thead class="table-form-head thead-light text-nowrap">
             <tr>
                 <th>Colour</th>
@@ -33,44 +35,49 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="row col-md-6 col-md-offset-2 custyle">
-    <table class="table table-striped custab">
-    <thead>
+    </div>
+</div>
+    <iframe width="100%" height="1000" src={{url_for('cityhist')}}></iframe>
+    <iframe width="100%" height="1000" src={{url_for('citypies')}}></iframe>
 
-        <tr>
-            <th>BIL</th>
-            <th>TITLE</th>
-            <th class="text-center">Action</th>
-        </tr>
-    </thead>
-            <tr>
-                <td>1</td>
-                <td>Single City Histogram</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="/singlehist"><span class="glyphicon glyphicon-edit"></span> View</a></td>
-            </tr>
+    <!--<div class="row col-md-6 col-md-offset-2 custyle">-->
+    <!--<table class="table table-striped custab">-->
+    <!--<thead>-->
 
-            <tr>
-                <td>2</td>
-                <td>Single City </td>
+        <!--<tr>-->
+            <!--<th>BIL</th>-->
+            <!--<th>TITLE</th>-->
+            <!--<th class="text-center">Action</th>-->
+        <!--</tr>-->
+    <!--</thead>-->
+            <!--<tr>-->
+                <!--<td>1</td>-->
+                <!--<td>Single City Histogram</td>-->
+                <!--<td class="text-center"><a class='btn btn-info btn-xs' href="/singlehist"><span class="glyphicon glyphicon-edit"></span> View</a></td>-->
+            <!--</tr>-->
 
-                <td class="text-center"><a class='btn btn-info btn-xs' href="/singlecity"><span class="glyphicon glyphicon-edit"></span> View</a></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>All City Histogram</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="/cityhist"><span class="glyphicon glyphicon-edit"></span> View</a></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>All City Pies</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="/citypies"><span class="glyphicon glyphicon-edit"></span> View</a></td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Flight Routes</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="/routes"><span class="glyphicon glyphicon-edit"></span> View</a></td>
-            </tr>
-    </table>
+            <!--<tr>-->
+                <!--<td>2</td>-->
+                <!--<td>Single City </td>-->
+
+                <!--<td class="text-center"><a class='btn btn-info btn-xs' href="/singlecity"><span class="glyphicon glyphicon-edit"></span> View</a></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>3</td>-->
+                <!--<td>All City Histogram</td>-->
+                <!--<td class="text-center"><a class='btn btn-info btn-xs' href="/cityhist"><span class="glyphicon glyphicon-edit"></span> View</a></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>4</td>-->
+                <!--<td>All City Pies</td>-->
+                <!--<td class="text-center"><a class='btn btn-info btn-xs' href="/citypies"><span class="glyphicon glyphicon-edit"></span> View</a></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>5</td>-->
+                <!--<td>Flight Routes</td>-->
+                <!--<td class="text-center"><a class='btn btn-info btn-xs' href="/routes"><span class="glyphicon glyphicon-edit"></span> View</a></td>-->
+            <!--</tr>-->
+    <!--</table>-->
 
 
 
