@@ -27,7 +27,7 @@
         <tbody class="table-form-body">
         {% for row, color in rows %}
             <tr>
-                <td> {{ color }}</td>
+                <td> <div style="background-color: {{ color }}; padding: 10px; width: 30px; height: 30px; border: 1px solid black"></div></td>
                 <td> {{ row[0] }} </td>
                 <td> {{ row[1] }} </td>
                 <td> {{ row[2] }} </td>
