@@ -61,8 +61,33 @@ class NewsProcessor:
 
     def filter_stop(self, words):
         word, stop = [], []
-        [(word, stop)[w in self.stop_words].append(w) for w in words]
+        stop_words = ' '.join(self.stop_words)
+        [(word, stop)[self.rabin_karp(w, stop_words)].append(w) for w in words]
         return word, stop
+
+    def rabin_karp(self, pattern, text, d=256, q=101):
+        M = len(pattern)
+        N = len(text)
+        p = 0
+        t = 0
+        h = pow(d, M - 1) % q
+        for i in range(M):
+            p = (d * p + ord(pattern[i])) % q
+            t = (d * t + ord(text[i])) % q
+        for j in range(N - M):
+            if p == t:
+                match = True
+                for i in range(M):
+                    if pattern[i] != text[j + i]:
+                        match = False
+                        break
+                if match:
+                    return True
+            if j < N - M:
+                t = (t - h * ord(text[j])) % q
+                t = (t * d + ord(text[j + M])) % q
+                t = (t + q) % q
+        return False
 
     def filter_pos(self, word_dict):
         return {k: v for k, v in word_dict.items() if k in self.pos_words}
