@@ -93,8 +93,11 @@ class FlightRecommendSystem:
         base_gmap.coloricon = "http://www.googlemapsmarkers.com/v1/%s/"
         return base_gmap
 
+
+
     def plot_routes(self, routes, gmap=None, file_path=os.path.join('..', 'src', 'templates', 'route.html'),
                     plot_src_dst=True):
+
         src, dst = routes[0][0][0], routes[0][0][-1]
         mid_lat, mid_lon = (self.city_list[src].coor[0] + self.city_list[dst].coor[0]) / 2, (
                 self.city_list[src].coor[1] + self.city_list[dst].coor[1]) / 2
@@ -195,7 +198,6 @@ class FlightRecommendSystem:
 app = Flask(__name__)
 app.secret_key = 'development key'
 
-
 @app.route('/form', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
@@ -252,7 +254,6 @@ def singlehist():
 @app.route('/routes', methods=['GET', 'POST'])
 def route():
     return render_template('route.html')
-
 
 
 
