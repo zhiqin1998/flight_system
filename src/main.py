@@ -225,7 +225,7 @@ def contact():
             flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
             flightsystem.plot_all_cities_pies()
 
-            return render_template('dashboard.html')
+            return render_template('dashboard.html', rows=zip(p[:5],['red', 'blue', 'orange', 'white', 'purple']))
     elif request.method == 'GET':
         return render_template('form.html', form=form)
 

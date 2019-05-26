@@ -13,6 +13,26 @@
 
 </nav>
     <iframe width="1000" height="1000" src={{url_for('route')}}></iframe>
+    <table class="table-form table table-sm table-hover compact" id="metadata">
+        <thead class="table-form-head thead-light text-nowrap">
+            <tr>
+                <th>Colour</th>
+                <th>Field Name</th>
+                <th>Distance</th>
+                <th>Positive Level</th>
+            </tr>
+        </thead>
+        <tbody class="table-form-body">
+        {% for row, color in rows %}
+            <tr>
+                <td> {{ color }}</td>
+                <td> {{ row[0] }} </td>
+                <td> {{ row[1] }} </td>
+                <td> {{ row[2] }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     <div class="row col-md-6 col-md-offset-2 custyle">
     <table class="table table-striped custab">
     <thead>
