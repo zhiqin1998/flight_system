@@ -201,31 +201,31 @@ app.secret_key = 'development key'
 @app.route('/form', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
-
+    choices = [(code, c.name) for code, c in flightsystem.city_list.items()]
+    choices.insert(0, ('None', 'Please select a city'))
+    form.source.choices = choices
+    form.destination.choices = choices
     if request.method == 'POST':
-        if form.validate() == False:
+        if not form.validate_on_submit():
             flash('All fields are required.')
             return render_template('form.html', form=form)
         else:
-            t1 = datetime.datetime.now()
-            flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
-            flightsystem.print_cities()
-            flightsystem.print_dist_mat()
-            print('time taken: {}'.format(datetime.datetime.now() - t1))
-            flightsystem.plot_cities()
-
-            p = flightsystem.shortest_routes(form.source._value(), form.destination._value())
+            if form.source.data == form.destination.data:
+                flash('Source and destination cannot be the same.')
+                return render_template('form.html', form=form)
+            p = flightsystem.shortest_routes(form.source.data, form.destination.data)
             p = flightsystem.sort_routes(p)
             [print(j) for j in p]
             flightsystem.plot_routes(p[:5])
-            flightsystem.plot([flightsystem.plot_single_city(form.destination._value(), group='pos+neg+neu+stop', graph_type='hist')],
-                              form.destination._value(),path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
-            flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list[form.destination._value()].pos_dicts)], 'Positive Words',
-                               path=os.path.join('..', 'src', 'templates', 'singlehist.html'))
-            flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
-            flightsystem.plot_all_cities_pies()
+            flightsystem.plot(
+                [flightsystem.plot_single_city(form.destination.data, group='pos+neg+neu+stop', graph_type='hist')],
+                form.destination.data, path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
+            flightsystem.plot(
+                [flightsystem.plot_words_hist(flightsystem.city_list[form.destination.data].pos_dicts)],
+                'Positive Words',
+                path=os.path.join('..', 'src', 'templates', 'singlehist.html'))
 
-            return render_template('dashboard.html', rows=zip(p[:5],['red', 'blue', 'orange', 'white', 'purple']))
+            return render_template('dashboard.html', rows=zip(p[:5], ['red', 'blue', 'orange', 'white', 'purple']))
     elif request.method == 'GET':
         return render_template('form.html', form=form)
 
@@ -258,6 +258,14 @@ def route():
 
 
 if __name__ == '__main__':
+    t1 = datetime.datetime.now()
+    flightsystem = FlightRecommendSystem(gmap_api_key='AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA')
+    flightsystem.print_cities()
+    flightsystem.print_dist_mat()
+    print('time taken: {}'.format(datetime.datetime.now() - t1))
+    flightsystem.plot_cities()
+    flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
+    flightsystem.plot_all_cities_pies()
     app.run(debug=True)
 
     # flightsystem.plot([flightsystem.plot_single_city('ATL', group='pos+neg+neu+stop', graph_type='hist')], 'Atlanta')
