@@ -5,14 +5,13 @@ import os
 
 import plotly
 import plotly.graph_objs as go
+from flask import Flask, render_template, request, flash
 from gmplot import *
 
 from src.city import City
+from src.forms import ContactForm
 from src.geolib import GeoLib
 from src.news_processor import NewsProcessor
-from flask import Flask, render_template, request, flash
-from src.forms import ContactForm
-
 
 
 class FlightRecommendSystem:
@@ -72,7 +71,8 @@ class FlightRecommendSystem:
                         ans.append((path, dist, pol))
                 else:
                     [cust_bfs(path + [c], dist + self.dist_mat[cur][c], pol + self.city_list[c].pol_senti) for c in
-                     sorted(self.city_list, key=lambda k: self.dist_mat[cur][k]) if c != cur and c != src]
+                     sorted(self.city_list, key=lambda k: self.dist_mat[cur][k]) if
+                     c != cur and c != src and c not in path]
 
         cust_bfs(p, 0, 0)
         return ans
@@ -92,8 +92,6 @@ class FlightRecommendSystem:
         base_gmap.apikey = self.gmap_api_key
         base_gmap.coloricon = "http://www.googlemapsmarkers.com/v1/%s/"
         return base_gmap
-
-
 
     def plot_routes(self, routes, gmap=None, file_path=os.path.join('..', 'src', 'templates', 'route.html'),
                     plot_src_dst=True):
@@ -123,7 +121,8 @@ class FlightRecommendSystem:
         word, count = map(list, [word_dict.keys(), word_dict.values()])
         return go.Bar(x=word, y=count, text=count, hoverinfo='y', textposition='auto', opacity=0.6)
 
-    def plot_all_cities_hist(self, path=os.path.join('..', 'src', 'templates', 'cityhist.html'), group='pos+stop+neg+neu'):
+    def plot_all_cities_hist(self, path=os.path.join('..', 'src', 'templates', 'cityhist.html'),
+                             group='pos+stop+neg+neu'):
         traces = [self.plot_single_city(c, 'hist', group=group) for c, _ in self.city_list.items()]
         self.plot(traces, 'News Word Counts Summary Histogram', path, layout=go.Layout(barmode='group'))
 
@@ -162,7 +161,8 @@ class FlightRecommendSystem:
                            textposition='auto', opacity=0.6)
         return trace
 
-    def plot_all_cities_pies(self, path=os.path.join('..', 'src', 'templates', 'citypies.html'), group='pos+stop+neg+neu'):
+    def plot_all_cities_pies(self, path=os.path.join('..', 'src', 'templates', 'citypies.html'),
+                             group='pos+stop+neg+neu'):
         traces = []
         annotations = []
         x_low, x_high, y_low, y_high, i = 0, 0.2, 0, 0.5, 0
@@ -197,6 +197,7 @@ class FlightRecommendSystem:
 
 app = Flask(__name__)
 app.secret_key = 'development key'
+
 
 @app.route('/form', methods=['GET', 'POST'])
 def contact():
@@ -239,22 +240,29 @@ def contact():
 def cityhist():
     return render_template('cityhist.html')
 
+
 @app.route('/citypies', methods=['GET', 'POST'])
 def citypies():
     return render_template('citypies.html')
 
+
 @app.route('/singlecity', methods=['GET', 'POST'])
 def singlecity():
+    city = request.args.get('city')
+    flightsystem.plot(
+        [flightsystem.plot_single_city(city, group='pos+neg+neu+stop', graph_type='hist')],
+        flightsystem.city_list[city].name, path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
     return render_template('singlecity.html')
+
 
 @app.route('/singlehist', methods=['GET', 'POST'])
 def singlehist():
     return render_template('singlehist.html')
 
+
 @app.route('/routes', methods=['GET', 'POST'])
 def route():
     return render_template('route.html')
-
 
 
 if __name__ == '__main__':
