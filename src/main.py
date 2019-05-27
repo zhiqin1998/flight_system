@@ -15,7 +15,7 @@ from src.news_processor import NewsProcessor
 
 
 class FlightRecommendSystem:
-    def __init__(self, gmap_api_key, code_ref=os.path.join('..', 'res', 'airport code references.txt')):
+    def __init__(self, gmap_api_key, code_ref=os.path.join(os.path.dirname(os.getcwd()), 'res', 'airport code references.txt')):
         self.gmap_api_key = gmap_api_key
         self.geolib = GeoLib(gmap_api_key)
         self.news_processor = NewsProcessor()
@@ -32,7 +32,7 @@ class FlightRecommendSystem:
             [c.coor[1] for _, c in self.city_list.items()])
         self.base_gmap = self.create_gmap((min_lat + max_lat) / 2, (min_lon + max_lon) / 2)
 
-    def plot_cities(self, file_path=os.path.join('..', 'res', 'html', 'cities.html')):
+    def plot_cities(self, file_path=os.path.join(os.path.dirname(os.getcwd()), 'res', 'html', 'cities.html')):
         if not os.path.exists(os.path.dirname(file_path)):
             os.makedirs(os.path.dirname(file_path))
         tmp = copy.deepcopy(self.base_gmap)
@@ -101,7 +101,7 @@ class FlightRecommendSystem:
         base_gmap.coloricon = "http://www.googlemapsmarkers.com/v1/%s/"
         return base_gmap
 
-    def plot_routes(self, routes, gmap=None, file_path=os.path.join('..', 'src', 'templates', 'route.html'),
+    def plot_routes(self, routes, gmap=None, file_path=os.path.join('templates', 'route.html'),
                     plot_src_dst=True):
 
         src, dst = routes[0][0][0], routes[0][0][-1]
@@ -129,7 +129,7 @@ class FlightRecommendSystem:
         word, count = map(list, [word_dict.keys(), word_dict.values()])
         return go.Bar(x=word, y=count, text=count, hoverinfo='y', textposition='auto', opacity=0.6)
 
-    def plot_all_cities_hist(self, path=os.path.join('..', 'src', 'templates', 'cityhist.html'),
+    def plot_all_cities_hist(self, path=os.path.join('templates', 'cityhist.html'),
                              group='pos+stop+neg+neu'):
         traces = [self.plot_single_city(c, 'hist', group=group) for c, _ in self.city_list.items()]
         self.plot(traces, 'News Word Counts Summary Histogram', path, layout=go.Layout(barmode='group'))
@@ -169,7 +169,7 @@ class FlightRecommendSystem:
                            textposition='auto', opacity=0.6)
         return trace
 
-    def plot_all_cities_pies(self, path=os.path.join('..', 'src', 'templates', 'citypies.html'),
+    def plot_all_cities_pies(self, path=os.path.join('templates', 'citypies.html'),
                              group='pos+stop+neg+neu'):
         traces = []
         annotations = []
@@ -234,11 +234,11 @@ def contact():
             flightsystem.plot_routes(p[:5])
             flightsystem.plot(
                 [flightsystem.plot_single_city(form.destination.data, group='pos+neg+neu+stop', graph_type='hist')],
-                form.destination.data, path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
+                form.destination.data, path=os.path.join('templates', 'singlecity.html'))
             flightsystem.plot(
                 [flightsystem.plot_words_hist(flightsystem.city_list[form.destination.data].pos_dicts)],
                 'Positive Words',
-                path=os.path.join('..', 'src', 'templates', 'singlehist.html'))
+                path=os.path.join('templates', 'singlehist.html'))
 
             return render_template('dashboard.html', rows=zip(p[:5], ['red', 'blue', 'orange', 'white', 'purple']))
     elif request.method == 'GET':
@@ -265,7 +265,7 @@ def singlecity():
     city = request.args.get('city')
     flightsystem.plot(
         [flightsystem.plot_single_city(city, group='pos+neg+neu+stop', graph_type='hist')],
-        flightsystem.city_list[city].name, path=os.path.join('..', 'src', 'templates', 'singlecity.html'))
+        flightsystem.city_list[city].name, path=os.path.join('templates', 'singlecity.html'))
     return render_template('singlecity.html')
 
 
@@ -275,7 +275,7 @@ def positivehist():
     flightsystem.plot(
         [flightsystem.plot_words_hist(flightsystem.city_list[city].pos_dicts)],
         'Positive Words',
-        path=os.path.join('..', 'src', 'templates', 'positivehist.html'))
+        path=os.path.join('templates', 'positivehist.html'))
 
     return render_template('positivehist.html')
 
@@ -286,7 +286,7 @@ def negativehist():
     flightsystem.plot(
         [flightsystem.plot_words_hist(flightsystem.city_list[city].neg_dicts)],
         'Negative Words',
-        path=os.path.join('..', 'src', 'templates', 'negativehist.html'))
+        path=os.path.join('templates', 'negativehist.html'))
 
     return render_template('negativehist.html')
 

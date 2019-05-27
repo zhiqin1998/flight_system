@@ -5,9 +5,9 @@ from src.city import City
 
 
 class NewsProcessor:
-    def __init__(self, pos_path=os.path.join('..', 'res', 'word', 'positive.txt'),
-                 neg_path=os.path.join('..', 'res', 'word', 'negative.txt'),
-                 stop_path=os.path.join('..', 'res', 'word', 'stopword.txt')):
+    def __init__(self, pos_path=os.path.join(os.path.dirname(os.getcwd()), 'res', 'word', 'positive.txt'),
+                 neg_path=os.path.join(os.path.dirname(os.getcwd()), 'res', 'word', 'negative.txt'),
+                 stop_path=os.path.join(os.path.dirname(os.getcwd()), 'res', 'word', 'stopword.txt')):
         self.pos_words = self.remove_weird_char(
             list(map(str.strip, open(pos_path, 'r', errors='ignore').read().strip().split(','))))
         self.neg_words = self.remove_weird_char(
@@ -115,7 +115,7 @@ if __name__ == '__main__':
     print(news_processor.neg_words)
     print(news_processor.pos_words)
     print(news_processor.stop_words)
-    news_dicts, stop_dicts = news_processor.count_words(os.path.join('..', 'res', 'news', 'ATL'))
+    news_dicts, stop_dicts = news_processor.count_words(os.path.join(os.path.dirname(os.getcwd()), 'res', 'news', 'ATL'))
     print()
     [print(d) for d in news_dicts]
     [print(d) for d in stop_dicts]
