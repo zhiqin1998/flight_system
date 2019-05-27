@@ -1,7 +1,39 @@
 <!doctype html>
 <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='bootstrap.css') }}">
+        <link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='datepicker.css') }}">
+        <style>
+            h2{
+            text-align:center;
+            margin-top:2%;
+            }
+            fieldset{
+                border:2px solid black;
+                padding:2%;
+                margin:2% 5%;
+            }
+            .center{
+                display:block;
+                margin:auto;
+                width:40%;
+            }
+            html{
+                width:100%;
+                height:100%;
+            }
+            body{
+                width:100%;
+                height:100%;
+            }
+        </style>
+        <script src = "{{ url_for('static', filename='datepicker.js')}}"></script>
+        <script src = "{{ url_for('static', filename='datepicker.en.js') }}"></script>
+
+    </head>
    <body>
-      <h2 style = "text-align: center;">Flight System</h2>
+      <h2>Flight System</h2>
 
       {% for message in form.source.errors %}
          <div>{{ message }}</div>
@@ -13,23 +45,32 @@
 
       <form action = "http://localhost:5000/form" method = post>
          <fieldset>
-            <legend>Flight System</legend>
+             <img src="https://www.airtransat.com/getmedia/879f9309-a298-4066-b0a2-65d293cc0fcd/vols-flights-generic-generiques-plane-avion-1000x600.aspx?width=1000&height=600&ext=.jpg"
+                class="center"><br>
             {{ form.hidden_tag() }}
-
-            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+            <div style = "font-size:20px; font-weight:bold; text-align:center;">
+                <div class="filter-option-list-input">
+                    <input type="text" name="datepicker" id="datepicker" class="datepicker-here" data-timepicker="false" data-language='en' data-date-format="yyyy-mm-dd">
+                </div>
+                <br>
                {{ form.source.label }}<br>
                {{ form.source }}
-               <br>
-
+               <br><br>
                 {{ form.destination.label }}<br>
                {{ form.destination }}
-               <br>
-
+                <br><br>
+                {{ form.sortby.label }}<br>
+               {{ form.sortby }}
+                <br><br>
+                {{ form.groups.label }}<br>
+               {{ form.groups }}
+               <br><br>
                {{ form.submit }}
             </div>
 
          </fieldset>
       </form>
+
     {% with messages = get_flashed_messages() %}
      {% if messages %}
        <script>
@@ -42,4 +83,3 @@
    {% endwith %}
    </body>
 </html>
-

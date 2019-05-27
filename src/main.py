@@ -77,13 +77,21 @@ class FlightRecommendSystem:
         cust_bfs(p, 0, 0)
         return ans
 
-    def sort_routes(self, routes, range_threshold=1000):
+    def sort_routes(self, routes, range_threshold=1000, groupby='dist'):
         def cmp(a, b):
-            # if abs(a[1] - b[1]) < range_threshold:
-            if int(a[1] / range_threshold) == int(b[1] / range_threshold):
-                return b[2] - a[2]
-            else:
-                return a[1] - b[1]
+            if groupby == 'dist':
+                if int(a[1] / range_threshold) == int(b[1] / range_threshold):
+                    if b[2] == a[2]:
+                        return a[1] - b[1]
+                    else:
+                        return b[2] - a[2]
+                else:
+                    return a[1] - b[1]
+            elif groupby == 'pol':
+                if int(a[2] / range_threshold) == int(b[2] / range_threshold):
+                    return a[1] - b[1]
+                else:
+                    return b[2] - a[2]
 
         return sorted(routes, key=functools.cmp_to_key(cmp))
 
@@ -206,6 +214,7 @@ def contact():
     choices.insert(0, ('None', 'Please select a city'))
     form.source.choices = choices
     form.destination.choices = choices
+    form.sortby.choices = [('dist', 'Distance'), ('pol', 'Political Sentiment')]
     if request.method == 'POST':
         if not form.validate_on_submit():
             flash('All fields are required.')
@@ -214,8 +223,13 @@ def contact():
             if form.source.data == form.destination.data:
                 flash('Source and destination cannot be the same.')
                 return render_template('form.html', form=form)
+            try:
+                group = int(form.groups.data)
+            except ValueError:
+                flash('Group Range must be an integer value.')
+                return render_template('form.html', form=form)
             p = flightsystem.shortest_routes(form.source.data, form.destination.data)
-            p = flightsystem.sort_routes(p)
+            p = flightsystem.sort_routes(p, range_threshold=group, groupby=form.sortby.data)
             [print(j) for j in p]
             flightsystem.plot_routes(p[:5])
             flightsystem.plot(
@@ -265,6 +279,7 @@ def positivehist():
 
     return render_template('positivehist.html')
 
+
 @app.route('/negativehist', methods=['GET', 'POST'])
 def negativehist():
     city = request.args.get('city')
@@ -274,6 +289,7 @@ def negativehist():
         path=os.path.join('..', 'src', 'templates', 'negativehist.html'))
 
     return render_template('negativehist.html')
+
 
 @app.route('/routes', methods=['GET', 'POST'])
 def route():
@@ -289,7 +305,7 @@ if __name__ == '__main__':
     flightsystem.plot_cities()
     flightsystem.plot_all_cities_hist(group='pos+neg+stop+neu')
     flightsystem.plot_all_cities_pies()
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
 
     # flightsystem.plot([flightsystem.plot_single_city('ATL', group='pos+neg+neu+stop', graph_type='hist')], 'Atlanta')
     # flightsystem.plot([flightsystem.plot_words_hist(flightsystem.city_list['ATL'].pos_dicts)], 'Atlanta Positive Words',
