@@ -31,10 +31,9 @@ class FlightRecommendSystem:
         min_lat, max_lat, min_lon, max_lon = min([c.coor[0] for _, c in self.city_list.items()]), max(
             [c.coor[0] for _, c in self.city_list.items()]), min([c.coor[1] for _, c in self.city_list.items()]), max(
             [c.coor[1] for _, c in self.city_list.items()])
-        self.base_gmap = self.create_gmap((min_lat + max_lat) / 2, (min_lon + max_lon) / 2)
+        self.base_gmap = self.create_gmap((min_lat + max_lat) / 2, (min_lon + max_lon) / 2, zoom=2)
 
-    def plot_cities(self, file_path=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
-                                                                 ), 'res', 'html', 'cities.html')):
+    def plot_cities(self, file_path=os.path.join('templates', 'cities.html')):
         if not os.path.exists(os.path.dirname(file_path)):
             os.makedirs(os.path.dirname(file_path))
         tmp = copy.deepcopy(self.base_gmap)
@@ -260,6 +259,11 @@ def cityhist():
 @app.route('/citypies', methods=['GET', 'POST'])
 def citypies():
     return render_template('citypies.html')
+
+
+@app.route('/cities', methods=['GET', 'POST'])
+def cities():
+    return render_template('cities.html')
 
 
 @app.route('/singlecity', methods=['GET', 'POST'])

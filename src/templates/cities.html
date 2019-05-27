@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Google Maps - pygmaps </title>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false&key=AIzaSyDgNNtNRpti5pymuNaHy7vCIIL9sI5ruIA"></script>
+<script type="text/javascript">
+	function initialize() {
+		var centerlatlng = new google.maps.LatLng(27.526641, 10.992160);
+		var myOptions = {
+			zoom: 2,
+			center: centerlatlng,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+		var latlng = new google.maps.LatLng(52.307687, 4.767424);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Amsterdam Airport Schiphol, Netherlands",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(33.640728, -84.427700);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Atlanta GA Airport, USA",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(40.079857, 116.603112);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Beijing Capital International Airport, China",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(49.009691, 2.547925);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Charles De Gaulle Airport, France",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(50.037933, 8.562152);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Frankfurt International Airport, Germany",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(22.308047, 113.918481);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Hong Kong International Airport, Hong Kong",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(2.745596, 101.707160);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Kuala Lumpur International Airport, Malaysia",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(51.470022, -0.454296);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "London Heathrow Airport, United Kingdom",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(33.941589, -118.408530);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Los Angeles International Airport, USA",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+		var latlng = new google.maps.LatLng(35.771987, 140.392850);
+		var img = new google.maps.MarkerImage('http://www.googlemapsmarkers.com/v1/FF0000/');
+		var marker = new google.maps.Marker({
+		title: "Narita International Airport, Japan",
+		icon: img,
+		position: latlng
+		});
+		marker.setMap(map);
+
+	}
+</script>
+</head>
+<body style="margin:0px; padding:0px;" onload="initialize()">
+	<div id="map_canvas" style="width: 100%; height: 100%;"></div>
+</body>
+</html>

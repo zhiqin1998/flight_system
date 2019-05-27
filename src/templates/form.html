@@ -45,10 +45,12 @@
 
       <form action = "http://localhost:5000/form" method = post>
          <fieldset>
-             <img src="https://www.airtransat.com/getmedia/879f9309-a298-4066-b0a2-65d293cc0fcd/vols-flights-generic-generiques-plane-avion-1000x600.aspx?width=1000&height=600&ext=.jpg"
-                class="center"><br>
+<!--             <img src="https://www.airtransat.com/getmedia/879f9309-a298-4066-b0a2-65d293cc0fcd/vols-flights-generic-generiques-plane-avion-1000x600.aspx?width=1000&height=600&ext=.jpg"-->
+<!--                class="center"><br>-->
+             <iframe width="1000" height="600" src={{url_for('cities')}} style="display: block; margin: auto"></iframe><br>
             {{ form.hidden_tag() }}
             <div style = "font-size:20px; font-weight:bold; text-align:center;">
+                <br>Flight Date<br>
                 <div class="filter-option-list-input">
                     <input type="text" name="datepicker" id="datepicker" class="datepicker-here" data-timepicker="false" data-language='en' data-date-format="yyyy-mm-dd">
                 </div>
