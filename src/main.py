@@ -15,7 +15,8 @@ from src.news_processor import NewsProcessor
 
 
 class FlightRecommendSystem:
-    def __init__(self, gmap_api_key, code_ref=os.path.join(os.path.dirname(os.getcwd()), 'res', 'airport code references.txt')):
+    def __init__(self, gmap_api_key, code_ref=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
+                                                                           ), 'res', 'airport code references.txt')):
         self.gmap_api_key = gmap_api_key
         self.geolib = GeoLib(gmap_api_key)
         self.news_processor = NewsProcessor()
@@ -32,7 +33,8 @@ class FlightRecommendSystem:
             [c.coor[1] for _, c in self.city_list.items()])
         self.base_gmap = self.create_gmap((min_lat + max_lat) / 2, (min_lon + max_lon) / 2)
 
-    def plot_cities(self, file_path=os.path.join(os.path.dirname(os.getcwd()), 'res', 'html', 'cities.html')):
+    def plot_cities(self, file_path=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
+                                                                 ), 'res', 'html', 'cities.html')):
         if not os.path.exists(os.path.dirname(file_path)):
             os.makedirs(os.path.dirname(file_path))
         tmp = copy.deepcopy(self.base_gmap)
