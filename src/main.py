@@ -255,10 +255,25 @@ def singlecity():
     return render_template('singlecity.html')
 
 
-@app.route('/singlehist', methods=['GET', 'POST'])
-def singlehist():
-    return render_template('singlehist.html')
+@app.route('/positivehist', methods=['GET', 'POST'])
+def positivehist():
+    city = request.args.get('city')
+    flightsystem.plot(
+        [flightsystem.plot_words_hist(flightsystem.city_list[city].pos_dicts)],
+        'Positive Words',
+        path=os.path.join('..', 'src', 'templates', 'positivehist.html'))
 
+    return render_template('positivehist.html')
+
+@app.route('/negativehist', methods=['GET', 'POST'])
+def negativehist():
+    city = request.args.get('city')
+    flightsystem.plot(
+        [flightsystem.plot_words_hist(flightsystem.city_list[city].neg_dicts)],
+        'Negative Words',
+        path=os.path.join('..', 'src', 'templates', 'negativehist.html'))
+
+    return render_template('negativehist.html')
 
 @app.route('/routes', methods=['GET', 'POST'])
 def route():
