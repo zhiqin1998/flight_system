@@ -4,3 +4,4 @@ geopy
 plotly
 gmplot
 flask
+flask_wtf
