@@ -1,4 +1,6 @@
+wtforms
 googlemaps
 geopy
 plotly
 gmplot
+flask
