@@ -102,7 +102,8 @@ class NewsProcessor:
         return {k: v for k, v in {k: v for k, v in word_dict.items() if k not in self.pos_words}.items() if
                 k not in self.neg_words}
 
-    def process_all(self, city_dict, res_dir=os.path.join('..', 'res')):
+    def process_all(self, city_dict,
+                    res_dir=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'res')):
         for c in [line.split(':')[0].strip() for line in
                   open(os.path.join(res_dir, 'airport code references.txt'), 'r').read().strip().split('\n')]:
             city_dict[c].news_dicts, city_dict[c].stop_dicts = self.count_words(os.path.join(res_dir, 'news', c))
