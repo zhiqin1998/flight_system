@@ -208,6 +208,7 @@ app = Flask(__name__)
 app.secret_key = 'development key'
 
 
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/form', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
