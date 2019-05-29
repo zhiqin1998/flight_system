@@ -69,7 +69,7 @@ class FlightRecommendSystem:
                 cur = path[-1]
                 if cur == dst:
                     if len(path) >= min + 2:
-                        ans.append((path, dist, pol))
+                        ans.append((path, dist, pol - self.city_list[cur].pol_senti))
                 else:
                     [cust_bfs(path + [c], dist + self.dist_mat[cur][c], pol + self.city_list[c].pol_senti) for c in
                      sorted(self.city_list, key=lambda k: self.dist_mat[cur][k]) if

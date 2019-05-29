@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <head>
+        <title>Flight Recommendation System</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='bootstrap.css') }}">
         <link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='datepicker.css') }}">
@@ -43,7 +44,7 @@
          <div>{{ message }}</div>
       {% endfor %}
 
-      <form action = "http://localhost:5000/form" method = post>
+      <form action = "{{url_for('contact')}}" method = post>
          <fieldset>
 <!--             <img src="https://www.airtransat.com/getmedia/879f9309-a298-4066-b0a2-65d293cc0fcd/vols-flights-generic-generiques-plane-avion-1000x600.aspx?width=1000&height=600&ext=.jpg"-->
 <!--                class="center"><br>-->
