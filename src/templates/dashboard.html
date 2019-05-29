@@ -9,7 +9,9 @@
     <!------ Include the above in your HEAD tag ---------->
     <title>Flight System Dashboard</title>
 </head>
-<nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark"><div class="navbar-brand" href="#">FLIGHT SYSTEM DASHBOARD</div>
+<nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+    <a href="/form" class="btn btn-default">< Back</a>
+    <div class="navbar-brand" href="#">FLIGHT SYSTEM DASHBOARD</div>
 </nav>
 <div>
     <iframe width="40%" height="1000" src={{url_for('route')}}></iframe>
@@ -62,8 +64,8 @@
 
     });
 </script>
-<iframe width="100%" height="700" src={{url_for('cityhist')}}></iframe>
-<iframe width="100%" height="700" src={{url_for('citypies')}}></iframe>
+<iframe width="100%" height="800" src={{url_for('cityhist')}}></iframe>
+<iframe width="100%" height="800" src={{url_for('citypies')}}></iframe>
 
     <!--<div class="row col-md-6 col-md-offset-2 custyle">-->
     <!--<table class="table table-striped custab">-->
